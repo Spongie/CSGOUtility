@@ -17,6 +17,7 @@ namespace CSGOUtility
         public event PlayerNameChanged onPlayerNameChanged;
         public event OnTeamWonRound onTeamWonRound;
         public event OnPlayerKill onPlayerKill;
+        public event EventHandler OnMatchStarted;
 
         private static CSGOEventListener instance;
         private GameStateListener listener;
@@ -31,17 +32,21 @@ namespace CSGOUtility
 
         private void Listener_NewGameState(GameState gameState)
         {
+            HandleInMatch(gameState);
+
             if (!IsPlayer(gameState))
                 return;
 
             HandlePlayerNameChange(gameState);
-
-            HandleInMatch(gameState);
         }
 
         private void HandleInMatch(GameState gameState)
         {
-            if (gameState.Map.Phase == CSGSI.Nodes.MapPhase.Live)
+            if (gameState.Map.Phase == CSGSI.Nodes.MapPhase.Live && gameState.Previously.Map.Phase == CSGSI.Nodes.MapPhase.Warmup)
+            {
+                OnMatchStarted?.Invoke(this, new EventArgs());
+            }
+            else if (gameState.Map.Phase == CSGSI.Nodes.MapPhase.Live)
             {
                 HandleRoundWon(gameState);
 
@@ -58,9 +63,13 @@ namespace CSGOUtility
         private void HandleRoundWon(GameState gameState)
         {
             if (gameState.Map.TeamCT.Score > gameState.Previously.Map.TeamCT.Score)
+            {
                 onTeamWonRound?.Invoke(Side.CounterTerrorist, gameState.Map.TeamCT.Score);
+            }
             else if (gameState.Map.TeamT.Score > gameState.Previously.Map.TeamT.Score)
+            {
                 onTeamWonRound?.Invoke(Side.Terrorist, gameState.Map.TeamT.Score);
+            }
         }
 
         private void HandlePlayerNameChange(GameState gameState)
