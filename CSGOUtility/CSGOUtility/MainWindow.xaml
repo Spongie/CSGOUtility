@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:CSGOUtility"
         mc:Ignorable="d"
         Title="CSGO Utility" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+    <StackPanel>
+        <Button Content="Start" Click="Button_Click" Height="50"/>
+        <Label Content="{Binding Path=Player.Name}"/>
+    </StackPanel>
 </Window>

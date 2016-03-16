@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSGOUtility.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,12 @@ namespace CSGOUtility
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            CSGOEventListener.Instance.Start();
+            DataContext = new MainPageViewModel();
         }
     }
 }
