@@ -9,10 +9,15 @@ using System.Threading.Tasks;
 namespace CSGOUtility
 {
     public delegate void PlayerNameChanged(string newName);
+    public delegate void OnTeamWonRound(Side side, int newRounds);
+    public delegate void OnPlayerKill(string withWeapon, bool headShot);
 
     public class CSGOEventListener
     {
-        public event PlayerNameChanged OnPlayerNameChanged;
+        public event PlayerNameChanged onPlayerNameChanged;
+        public event OnTeamWonRound onTeamWonRound;
+        public event OnPlayerKill onPlayerKill;
+
         private static CSGOEventListener instance;
         private GameStateListener listener;
         private Player player;
@@ -24,16 +29,47 @@ namespace CSGOUtility
             listener.Start();
         }
 
-        private void Listener_NewGameState(GameState currentGameState)
+        private void Listener_NewGameState(GameState gameState)
         {
-            if (!IsPlayer(currentGameState))
+            if (!IsPlayer(gameState))
                 return;
 
-            if (player == null || DidPlayerNameChange(currentGameState))
-            {
-                player = new Player(currentGameState.Player.Name, currentGameState.Player.SteamID);
+            HandlePlayerNameChange(gameState);
 
-                OnPlayerNameChanged?.Invoke(player.Name);
+            HandleInMatch(gameState);
+        }
+
+        private void HandleInMatch(GameState gameState)
+        {
+            if (gameState.Map.Phase == CSGSI.Nodes.MapPhase.Live)
+            {
+                HandleRoundWon(gameState);
+
+                if (gameState.Player.MatchStats.Kills > gameState.Previously.Player.MatchStats.Kills)
+                    onPlayerKill?.Invoke(gameState.Player.Weapons.ActiveWeapon.Name, WasKillHeadShot(gameState));
+            }
+        }
+
+        private static bool WasKillHeadShot(GameState gameState)
+        {
+            return gameState.Player.State.RoundKillHS > gameState.Previously.Player.State.RoundKillHS;
+        }
+
+        private void HandleRoundWon(GameState gameState)
+        {
+            if (gameState.Map.TeamCT.Score > gameState.Previously.Map.TeamCT.Score)
+                onTeamWonRound?.Invoke(Side.CounterTerrorist, gameState.Map.TeamCT.Score);
+            else if (gameState.Map.TeamT.Score > gameState.Previously.Map.TeamT.Score)
+                onTeamWonRound?.Invoke(Side.Terrorist, gameState.Map.TeamT.Score);
+        }
+
+        private void HandlePlayerNameChange(GameState gameState)
+        {
+            if (player == null || DidPlayerNameChange(gameState))
+            {
+                player = new Player(gameState.Player.Name, gameState.Player.SteamID);
+
+                onPlayerNameChanged?.Invoke(player.Name);
             }
         }
 

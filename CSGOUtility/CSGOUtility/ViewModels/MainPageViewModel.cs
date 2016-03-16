@@ -13,7 +13,7 @@ namespace CSGOUtility.ViewModels
 
         public MainPageViewModel()
         {
-            CSGOEventListener.Instance.OnPlayerNameChanged += Instance_OnPlayerNameChanged;
+            CSGOEventListener.Instance.onPlayerNameChanged += Instance_OnPlayerNameChanged;
         }
 
         private void Instance_OnPlayerNameChanged(string newName)

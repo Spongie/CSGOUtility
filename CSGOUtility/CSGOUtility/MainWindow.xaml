@@ -4,10 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CSGOUtility"
+        xmlns:views="clr-namespace:CSGOUtility.Views"
         mc:Ignorable="d"
-        Title="CSGO Utility" Height="350" Width="525">
-    <StackPanel>
-        <Button Content="Start" Click="Button_Click" Height="50"/>
-        <Label Content="{Binding Path=Player.Name}"/>
-    </StackPanel>
+        Title="CSGO Utility" Height="550" Width="725">
+    <Grid>
+        <TabControl>
+            <TabItem Header="Program">
+                <StackPanel Orientation="Vertical">
+                    <Button Click="Button_Click" Content="Start"/>
+                    <Label Content="{Binding Player.Name}"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Current game">
+                <views:CurrentGameView x:Name="currentGameView" />
+            </TabItem>
+        </TabControl>
+    </Grid>
 </Window>
