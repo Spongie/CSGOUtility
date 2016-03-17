@@ -31,5 +31,9 @@
             }
         }
 
+        public string WeaponImage
+        {
+            get { return "/Resources/Weapons/" + weapon; }
+        }
     }
 }
