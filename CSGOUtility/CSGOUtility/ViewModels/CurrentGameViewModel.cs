@@ -1,4 +1,5 @@
-﻿using CSGOUtility.Models;
+﻿using CSGOUtility.Data;
+using CSGOUtility.Models;
 using CSGOUtility.Utility;
 using System;
 using System.Linq;
@@ -19,8 +20,14 @@ namespace CSGOUtility.ViewModels
             CSGOEventListener.Instance.onTeamWonRound += Instance_onTeamWonRound;
             CSGOEventListener.Instance.onMatchStarted += Instance_OnMatchStarted;
             CSGOEventListener.Instance.onPlayerDied += Instance_onPlayerDied;
+            CSGOEventListener.Instance.onMatchEnded += Instance_onMatchEnded;
             kills = new MTObservableCollection<Kill>();
             kills.CollectionChanged += Kills_CollectionChanged;
+        }
+
+        private void Instance_onMatchEnded(MatchResult result)
+        {
+            
         }
 
         private void Instance_onPlayerDied(object sender, EventArgs e)

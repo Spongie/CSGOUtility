@@ -15,6 +15,7 @@ namespace CSGOUtility
     public delegate void PlayerNameChanged(string newName);
     public delegate void OnTeamWonRound(Side side, int newRounds);
     public delegate void OnPlayerKill(string withWeapon, bool headShot, int round);
+    public delegate void OnMatchEnding(MatchResult result);
 
     public class CSGOEventListener
     {
@@ -22,7 +23,9 @@ namespace CSGOUtility
         public event OnTeamWonRound onTeamWonRound;
         public event OnPlayerKill onPlayerKill;
         public event EventHandler onMatchStarted;
+        public event OnMatchEnding onMatchEnded;
         public event EventHandler onPlayerDied;
+
         private static CSGOEventListener instance;
         private GameStateListener listener;
         private Player player;
@@ -79,6 +82,25 @@ namespace CSGOUtility
                     onPlayerKill?.Invoke(gameState.Player.Weapons.ActiveWeapon.Name, WasKillHeadShot(gameState), gameState.Map.Round + 1);
                 }
             }
+            else if (gameState.Map.Phase == CSGSI.Nodes.MapPhase.GameOver && PreviousGameState.Map.Phase == CSGSI.Nodes.MapPhase.Live)
+            {
+                HandleGameEnded(gameState);
+            }
+        }
+
+        private void HandleGameEnded(GameState gameState)
+        {
+            MatchResult result;
+            if (gameState.Map.TeamCT.Score == gameState.Map.TeamT.Score)
+                result = MatchResult.Draw;
+            else if (gameState.Map.TeamCT.Score > gameState.Map.TeamT.Score)
+            {
+                result = gameState.Player.Team == CSGSI.Nodes.PlayerTeam.CT ? MatchResult.Victory : MatchResult.Loose;
+            }
+            else
+                result = gameState.Player.Team == CSGSI.Nodes.PlayerTeam.T ? MatchResult.Victory : MatchResult.Loose;
+
+            onMatchEnded?.Invoke(result);
         }
 
         private bool WasKillHeadShot(GameState gameState)

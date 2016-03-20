@@ -7,8 +7,13 @@ namespace CSGOUtility.Models
     {
         private bool wasHeadshot;
         private string weapon;
-        private DateTime dateTime;
         private int round;
+        private DateTime dateTime;
+
+        public Kill()
+        {
+
+        }
 
         public Kill(string weapon, bool headshot, DateTime time, int round)
         {
@@ -16,6 +21,16 @@ namespace CSGOUtility.Models
             Headshot = headshot;
             Date = time;
             Round = round;
+        }
+
+        public DateTime Date
+        {
+            get { return dateTime; }
+            set
+            {
+                dateTime = value;
+                FirePropertyChanged();
+            }
         }
 
         public string Weapon
@@ -47,18 +62,5 @@ namespace CSGOUtility.Models
                 FirePropertyChanged();
             }
         }
-
-
-        public DateTime Date
-        {
-            get { return dateTime; }
-            set
-            {
-                dateTime = value;
-                FirePropertyChanged();
-            }
-        }
-
-
     }
 }
