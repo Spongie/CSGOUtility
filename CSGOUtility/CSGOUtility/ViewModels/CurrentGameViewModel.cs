@@ -1,16 +1,12 @@
 ﻿using CSGOUtility.Models;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using CSGOUtility.Utility;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSGOUtility.ViewModels
 {
     public class CurrentGameViewModel : Entity
     {
-        private ObservableCollection<Kill> kills;
+        private MTObservableCollection<Kill> kills;
         private float headshotPercentage;
         private int ctWins;
         private int tWins;
@@ -18,6 +14,7 @@ namespace CSGOUtility.ViewModels
         public CurrentGameViewModel()
         {
             CSGOEventListener.Instance.onPlayerKill += Instance_onPlayerKill;
+            kills = new MTObservableCollection<Kill>();
         }
 
         private void Instance_onPlayerKill(string withWeapon, bool headShot)
@@ -26,7 +23,7 @@ namespace CSGOUtility.ViewModels
             HeadshotPercent = kills.Where(kill => kill.Headshot).Count() / (float)kills.Count;
         }
 
-        public ObservableCollection<Kill> Kills
+        public MTObservableCollection<Kill> Kills
         {
             get { return kills; }
             set

@@ -1,4 +1,6 @@
-﻿namespace CSGOUtility.Models
+﻿using CSGOUtility.Utility;
+
+namespace CSGOUtility.Models
 {
     public class Player : Entity
     {

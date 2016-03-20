@@ -7,19 +7,29 @@
              xmlns:viewModels="clr-namespace:CSGOUtility.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="500"
-             d:DataContext="{d:DesignInstance viewModels:CurrentGameViewModel, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance d:Type=viewModels:CurrentGameViewModel, IsDesignTimeCreatable=True}">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30*"/>
+            <ColumnDefinition Width="70*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20*"/>
             <RowDefinition Height="90*"/>
         </Grid.RowDefinitions>
-        <Image Source="/Resources/TerroristIcon.png" Grid.Row="0" HorizontalAlignment="Right" Margin="0,5,10,5"/>
+        <Image Source="/Resources/TerroristIcon.png" Grid.Row="0" HorizontalAlignment="Right" Margin="0,5,10,5" Grid.Column="1"/>
         <Image Source="/Resources/CounterTerroristIcon.png" Grid.Row="0" HorizontalAlignment="Left" Margin="10,5,0,5"/>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Margin="81,12,228,12">
             <Label Content="{Binding CTWins}" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <Label Content="-" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <Label Content="{Binding TWins}" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </StackPanel>
-        <Line X2="22222" StrokeThickness="2" Grid.Row="0" Stroke="Black" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0,5,0,0"/>
+        <Line X2="22222" StrokeThickness="2" Grid.Row="0" Stroke="Black" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Grid.ColumnSpan="2"/>
+        <DataGrid Grid.Column="0" Grid.Row="1" Margin="5" ItemsSource="{Binding Kills}" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Weapon}" ClipboardContentBinding="{x:Null}" Header="Weapon"/>
+                <DataGridCheckBoxColumn Binding="{Binding Headshot}" ClipboardContentBinding="{x:Null}" Header="Headshot"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>

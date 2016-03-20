@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CSGOUtility"
         xmlns:views="clr-namespace:CSGOUtility.Views"
         mc:Ignorable="d"
-        Title="CSGO Utility" Height="550" Width="725">
+        Title="CSGO Utility" Height="550" Width="725" KeyDown="Window_KeyDown" Closing="Window_Closing">
     <Grid>
         <TabControl>
             <TabItem Header="Program">

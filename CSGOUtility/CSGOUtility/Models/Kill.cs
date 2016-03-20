@@ -1,9 +1,13 @@
-﻿namespace CSGOUtility.Models
+﻿using CSGOUtility.Utility;
+using System;
+
+namespace CSGOUtility.Models
 {
     public class Kill : Entity
     {
         private bool wasHeadshot;
         private string weapon;
+        private DateTime dateTime;
 
         public Kill(string weapon, bool headshot)
         {
@@ -30,6 +34,17 @@
                 FirePropertyChanged();
             }
         }
+
+        public DateTime Date
+        {
+            get { return dateTime; }
+            set
+            {
+                dateTime = value;
+                FirePropertyChanged();
+            }
+        }
+
 
     }
 }

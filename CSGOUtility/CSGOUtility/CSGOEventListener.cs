@@ -2,9 +2,13 @@
 using CSGSI;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace CSGOUtility
 {
@@ -25,24 +29,40 @@ namespace CSGOUtility
         
         public void Start()
         {
-            listener = new GameStateListener(3000);
-            listener.NewGameState += Listener_NewGameState;
-            listener.Start();
+            if (listener == null)
+            {
+                listener = new GameStateListener(3000);
+                listener.NewGameState += Listener_NewGameState;
+            }
+
+            if (!listener.Running)
+                listener.Start();
+        }
+
+        public void Stop()
+        {
+            if (listener.Running)
+                listener.Stop();
         }
 
         private void Listener_NewGameState(GameState gameState)
         {
-            HandleInMatch(gameState);
+            if (PreviousGameState == null)
+                PreviousGameState = gameState;
 
             if (!IsPlayer(gameState))
                 return;
 
+            HandleInMatch(gameState);
+
             HandlePlayerNameChange(gameState);
+
+            PreviousGameState = gameState;
         }
 
         private void HandleInMatch(GameState gameState)
         {
-            if (gameState.Map.Phase == CSGSI.Nodes.MapPhase.Live && gameState.Previously.Map.Phase == CSGSI.Nodes.MapPhase.Warmup)
+            if (gameState.Map.Phase == CSGSI.Nodes.MapPhase.Live && PreviousGameState.Map.Phase == CSGSI.Nodes.MapPhase.Warmup)
             {
                 OnMatchStarted?.Invoke(this, new EventArgs());
             }
@@ -50,23 +70,25 @@ namespace CSGOUtility
             {
                 HandleRoundWon(gameState);
 
-                if (gameState.Player.MatchStats.Kills > gameState.Previously.Player.MatchStats.Kills)
+                if (gameState.Player.MatchStats.Kills > PreviousGameState.Player.MatchStats.Kills && gameState.Player.MatchStats.Kills > 0)
+                {
                     onPlayerKill?.Invoke(gameState.Player.Weapons.ActiveWeapon.Name, WasKillHeadShot(gameState));
+                }
             }
         }
 
-        private static bool WasKillHeadShot(GameState gameState)
+        private bool WasKillHeadShot(GameState gameState)
         {
-            return gameState.Player.State.RoundKillHS > gameState.Previously.Player.State.RoundKillHS;
+            return gameState.Player.State.RoundKillHS > PreviousGameState.Player.State.RoundKillHS;
         }
 
         private void HandleRoundWon(GameState gameState)
         {
-            if (gameState.Map.TeamCT.Score > gameState.Previously.Map.TeamCT.Score)
+            if (gameState.Map.TeamCT.Score > PreviousGameState.Map.TeamCT.Score)
             {
                 onTeamWonRound?.Invoke(Side.CounterTerrorist, gameState.Map.TeamCT.Score);
             }
-            else if (gameState.Map.TeamT.Score > gameState.Previously.Map.TeamT.Score)
+            else if (gameState.Map.TeamT.Score > PreviousGameState.Map.TeamT.Score)
             {
                 onTeamWonRound?.Invoke(Side.Terrorist, gameState.Map.TeamT.Score);
             }
@@ -77,7 +99,6 @@ namespace CSGOUtility
             if (player == null || DidPlayerNameChange(gameState))
             {
                 player = new Player(gameState.Player.Name, gameState.Player.SteamID);
-
                 onPlayerNameChanged?.Invoke(player.Name);
             }
         }
@@ -92,6 +113,11 @@ namespace CSGOUtility
             return player == null || player.SteamID == currentGameState.Player.SteamID;
         }
 
+        public GameState PreviousGameState
+        {
+            get; set;
+        }
+
         public static CSGOEventListener Instance
         {
             get
@@ -103,4 +129,6 @@ namespace CSGOUtility
             }
         }
     }
+
+    
 }

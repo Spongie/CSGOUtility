@@ -1,8 +1,10 @@
 ﻿using CSGOUtility.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -30,6 +32,19 @@ namespace CSGOUtility
         {
             CSGOEventListener.Instance.Start();
             DataContext = new MainPageViewModel();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.O)
+            {
+                Button_Click(this, new RoutedEventArgs());
+            }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            CSGOEventListener.Instance.Stop();
         }
     }
 }

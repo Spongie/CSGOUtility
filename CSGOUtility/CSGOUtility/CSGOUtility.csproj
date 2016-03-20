@@ -67,6 +67,7 @@
     <Compile Include="Models\Kill.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\Side.cs" />
+    <Compile Include="Utility\MTObservableCollection.cs" />
     <Compile Include="ViewModels\CurrentGameViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="Views\CurrentGameView.xaml.cs">
@@ -81,7 +82,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CSGOEventListener.cs" />
-    <Compile Include="Entity.cs" />
+    <Compile Include="Utility\Entity.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
