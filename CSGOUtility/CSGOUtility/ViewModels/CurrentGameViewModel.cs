@@ -15,7 +15,25 @@ namespace CSGOUtility.ViewModels
         public CurrentGameViewModel()
         {
             CSGOEventListener.Instance.onPlayerKill += Instance_onPlayerKill;
+            CSGOEventListener.Instance.onTeamWonRound += Instance_onTeamWonRound;
+            CSGOEventListener.Instance.OnMatchStarted += Instance_OnMatchStarted;
             kills = new MTObservableCollection<Kill>();
+        }
+
+        private void Instance_OnMatchStarted(object sender, EventArgs e)
+        {
+            CTWins = 0;
+            TWins = 0;
+            Kills.Clear();
+            HeadshotPercent = 0.0f;
+        }
+
+        private void Instance_onTeamWonRound(Side side, int newRounds)
+        {
+            if (side == Side.CounterTerrorist)
+                CTWins = newRounds;
+            else
+                TWins = newRounds;
         }
 
         private void Instance_onPlayerKill(string withWeapon, bool headShot, int round)

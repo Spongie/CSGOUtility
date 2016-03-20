@@ -72,7 +72,7 @@ namespace CSGOUtility
 
                 if (gameState.Player.MatchStats.Kills > PreviousGameState.Player.MatchStats.Kills && gameState.Player.MatchStats.Kills > 0)
                 {
-                    onPlayerKill?.Invoke(gameState.Player.Weapons.ActiveWeapon.Name, WasKillHeadShot(gameState), gameState.Map.Round);
+                    onPlayerKill?.Invoke(gameState.Player.Weapons.ActiveWeapon.Name, WasKillHeadShot(gameState), gameState.Map.Round + 1);
                 }
             }
         }
