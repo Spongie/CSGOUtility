@@ -21,8 +21,8 @@ namespace CSGOUtility
         public event PlayerNameChanged onPlayerNameChanged;
         public event OnTeamWonRound onTeamWonRound;
         public event OnPlayerKill onPlayerKill;
-        public event EventHandler OnMatchStarted;
-
+        public event EventHandler onMatchStarted;
+        public event EventHandler onPlayerDied;
         private static CSGOEventListener instance;
         private GameStateListener listener;
         private Player player;
@@ -41,7 +41,7 @@ namespace CSGOUtility
 
         public void Stop()
         {
-            if (listener.Running)
+            if (listener != null && listener.Running)
                 listener.Stop();
         }
 
@@ -64,12 +64,16 @@ namespace CSGOUtility
         {
             if (gameState.Map.Phase == CSGSI.Nodes.MapPhase.Live && PreviousGameState.Map.Phase == CSGSI.Nodes.MapPhase.Warmup)
             {
-                OnMatchStarted?.Invoke(this, new EventArgs());
+                onMatchStarted?.Invoke(this, new EventArgs());
             }
             else if (gameState.Map.Phase == CSGSI.Nodes.MapPhase.Live)
             {
                 HandleRoundWon(gameState);
 
+                if (gameState.Player.State.Health <= 0 && PreviousGameState.Player.State.Health > 0)
+                {
+                    onPlayerDied?.Invoke(this, new EventArgs());
+                }
                 if (gameState.Player.MatchStats.Kills > PreviousGameState.Player.MatchStats.Kills && gameState.Player.MatchStats.Kills > 0)
                 {
                     onPlayerKill?.Invoke(gameState.Player.Weapons.ActiveWeapon.Name, WasKillHeadShot(gameState), gameState.Map.Round + 1);

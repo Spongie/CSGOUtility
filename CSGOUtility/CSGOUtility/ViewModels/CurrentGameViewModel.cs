@@ -11,13 +11,34 @@ namespace CSGOUtility.ViewModels
         private float headshotPercentage;
         private int ctWins;
         private int tWins;
+        private int totalDeaths;
 
         public CurrentGameViewModel()
         {
             CSGOEventListener.Instance.onPlayerKill += Instance_onPlayerKill;
             CSGOEventListener.Instance.onTeamWonRound += Instance_onTeamWonRound;
-            CSGOEventListener.Instance.OnMatchStarted += Instance_OnMatchStarted;
+            CSGOEventListener.Instance.onMatchStarted += Instance_OnMatchStarted;
+            CSGOEventListener.Instance.onPlayerDied += Instance_onPlayerDied;
             kills = new MTObservableCollection<Kill>();
+            kills.CollectionChanged += Kills_CollectionChanged;
+        }
+
+        private void Instance_onPlayerDied(object sender, EventArgs e)
+        {
+            TotalDeaths++;
+            UpdateReadonlyFields();
+        }
+
+        private void Kills_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            UpdateReadonlyFields();
+        }
+
+        private void UpdateReadonlyFields()
+        {
+            FirePropertyChanged("TotalKills");
+            FirePropertyChanged("TotalDeaths");
+            FirePropertyChanged("KD");
         }
 
         private void Instance_OnMatchStarted(object sender, EventArgs e)
@@ -26,6 +47,7 @@ namespace CSGOUtility.ViewModels
             TWins = 0;
             Kills.Clear();
             HeadshotPercent = 0.0f;
+            TotalDeaths = 0;
         }
 
         private void Instance_onTeamWonRound(Side side, int newRounds)
@@ -59,7 +81,41 @@ namespace CSGOUtility.ViewModels
             {
                 headshotPercentage = value;
                 FirePropertyChanged();
+                FirePropertyChanged("HeadshotPercentDisplay");
             }
+        }
+
+        public string HeadshotPercentDisplay
+        {
+            get { return (HeadshotPercent * 100).ToString("f2") + "%"; }
+        }
+
+        public int TotalKills
+        {
+            get { return Kills.Count; }
+        }
+
+        public int TotalDeaths
+        {
+            get { return totalDeaths; }
+            set
+            {
+                totalDeaths = value;
+                FirePropertyChanged();
+            }
+        }
+
+        public string KD
+        {
+            get { return GetKD(); }
+        }
+
+        private string GetKD()
+        {
+            if (TotalDeaths == 0)
+                return TotalKills.ToString() + "%";
+
+            return ((TotalKills / ((float)TotalKills + TotalDeaths)) * 100).ToString("f2") + "%";
         }
 
         public int TWins
