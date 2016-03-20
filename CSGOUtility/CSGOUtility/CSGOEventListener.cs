@@ -14,7 +14,7 @@ namespace CSGOUtility
 {
     public delegate void PlayerNameChanged(string newName);
     public delegate void OnTeamWonRound(Side side, int newRounds);
-    public delegate void OnPlayerKill(string withWeapon, bool headShot);
+    public delegate void OnPlayerKill(string withWeapon, bool headShot, int round);
 
     public class CSGOEventListener
     {
@@ -72,7 +72,7 @@ namespace CSGOUtility
 
                 if (gameState.Player.MatchStats.Kills > PreviousGameState.Player.MatchStats.Kills && gameState.Player.MatchStats.Kills > 0)
                 {
-                    onPlayerKill?.Invoke(gameState.Player.Weapons.ActiveWeapon.Name, WasKillHeadShot(gameState));
+                    onPlayerKill?.Invoke(gameState.Player.Weapons.ActiveWeapon.Name, WasKillHeadShot(gameState), gameState.Map.Round);
                 }
             }
         }

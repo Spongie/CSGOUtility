@@ -1,5 +1,6 @@
 ﻿using CSGOUtility.Models;
 using CSGOUtility.Utility;
+using System;
 using System.Linq;
 
 namespace CSGOUtility.ViewModels
@@ -17,9 +18,9 @@ namespace CSGOUtility.ViewModels
             kills = new MTObservableCollection<Kill>();
         }
 
-        private void Instance_onPlayerKill(string withWeapon, bool headShot)
+        private void Instance_onPlayerKill(string withWeapon, bool headShot, int round)
         {
-            kills.Add(new Kill(withWeapon, headShot));
+            kills.Add(new Kill(withWeapon, headShot, DateTime.Now, round));
             HeadshotPercent = kills.Where(kill => kill.Headshot).Count() / (float)kills.Count;
         }
 

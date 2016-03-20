@@ -10,8 +10,8 @@
              d:DataContext="{d:DesignInstance d:Type=viewModels:CurrentGameViewModel, IsDesignTimeCreatable=True}">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="30*"/>
-            <ColumnDefinition Width="70*"/>
+            <ColumnDefinition Width="38*"/>
+            <ColumnDefinition Width="62*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20*"/>
@@ -29,6 +29,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Weapon}" ClipboardContentBinding="{x:Null}" Header="Weapon"/>
                 <DataGridCheckBoxColumn Binding="{Binding Headshot}" ClipboardContentBinding="{x:Null}" Header="Headshot"/>
+                <DataGridTextColumn Binding="{Binding Round}" ClipboardContentBinding="{x:Null}" Header="Round"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
