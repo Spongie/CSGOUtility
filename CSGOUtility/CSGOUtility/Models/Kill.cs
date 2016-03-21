@@ -61,6 +61,11 @@ namespace CSGOUtility.Models
                 round = value;
                 FirePropertyChanged();
             }
+		}
+		
+        public string WeaponImage
+        {
+            get { return "/Resources/Weapons/" + weapon; }
         }
     }
 }

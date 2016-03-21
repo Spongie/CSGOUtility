@@ -120,9 +120,9 @@ namespace CSGOUtility.ViewModels
         private string GetKD()
         {
             if (TotalDeaths == 0)
-                return TotalKills.ToString() + "%";
+                return TotalKills.ToString();
 
-            return ((TotalKills / ((float)TotalKills + TotalDeaths)) * 100).ToString("f2") + "%";
+            return ((TotalKills / ((float)TotalKills + TotalDeaths)) * 100).ToString("f2");
         }
 
         public int TWins

@@ -86,6 +86,10 @@ namespace CSGOUtility
             {
                 HandleGameEnded(gameState);
             }
+            else if (gameState.Map.Phase == CSGSI.Nodes.MapPhase.GameOver && gameState.Previously.Map.Phase == CSGSI.Nodes.MapPhase.Live)
+            {
+                onMatchEnded?.Invoke(MatchResult.Draw);
+            }
         }
 
         private void HandleGameEnded(GameState gameState)
