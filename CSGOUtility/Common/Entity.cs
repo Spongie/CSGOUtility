@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace CSGOUtility.Utility
+namespace Common
 {
     public class Entity : INotifyPropertyChanged
     {

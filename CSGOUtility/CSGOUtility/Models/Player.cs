@@ -1,4 +1,4 @@
-﻿using CSGOUtility.Utility;
+﻿using Common;
 
 namespace CSGOUtility.Models
 {

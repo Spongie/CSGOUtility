@@ -1,5 +1,5 @@
-﻿using CSGOUtility.Models;
-using CSGOUtility.Utility;
+﻿using Common;
+using CSGOUtility.Models;
 
 namespace CSGOUtility.ViewModels
 {

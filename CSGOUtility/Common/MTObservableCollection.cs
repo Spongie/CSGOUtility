@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Threading;
 
-namespace CSGOUtility.Utility
+namespace Common
 {
     public class MTObservableCollection<T> : ObservableCollection<T>
     {
