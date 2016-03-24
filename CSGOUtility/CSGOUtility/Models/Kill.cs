@@ -63,9 +63,6 @@ namespace CSGOUtility.Models
             }
 		}
 		
-        public string WeaponImage
-        {
-            get { return "/Resources/Weapons/" + weapon; }
-        }
+        public string WeaponImage => "/Resources/Weapons/" + weapon;
     }
 }

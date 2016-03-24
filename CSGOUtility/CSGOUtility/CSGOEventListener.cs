@@ -1,14 +1,6 @@
 ﻿using CSGOUtility.Models;
 using CSGSI;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Threading;
 
 namespace CSGOUtility
 {
@@ -140,7 +132,7 @@ namespace CSGOUtility
 
         private bool IsPlayer(GameState currentGameState)
         {
-            return player == null || player.SteamID == currentGameState.Player.SteamID;
+            return player == null || player.SteamId == currentGameState.Player.SteamID;
         }
 
         public GameState PreviousGameState
@@ -148,17 +140,6 @@ namespace CSGOUtility
             get; set;
         }
 
-        public static CSGOEventListener Instance
-        {
-            get
-            {
-                if (instance == null)
-                    instance = new CSGOEventListener();
-
-                return instance;
-            }
-        }
+        public static CSGOEventListener Instance => instance ?? (instance = new CSGOEventListener());
     }
-
-    
 }

@@ -15,10 +15,10 @@ namespace CSGOUtility.Models
         public Player(string name, string id)
         {
             Name = name;
-            SteamID = id;
+            SteamId = id;
         }
 
-        public string SteamID
+        public string SteamId
         {
             get { return steamId; }
             set

@@ -23,9 +23,7 @@ namespace CSGOUtility.Data
             string fileName = GetFileName<T>();
 
             if (!File.Exists(fileName))
-                Enumerable.Empty<T>();
-
-            var data = new List<T>();
+                return Enumerable.Empty<T>();
 
             using (var file = new StreamReader(fileName))
             {
@@ -34,14 +32,15 @@ namespace CSGOUtility.Data
             }
         }
 
-        public async Task WriteDataAsync<T>(IEnumerable<T> data)
+        public async Task WriteDataAsync<T>(IEnumerable<T> newData)
         {
-            var existingData = await ReadDataAsync<T>();
-            var dataToWrite = existingData.Concat(data);
-
-            using (var file = new StreamWriter(GetFileName<T>()))
+            using (var file = new StreamWriter(GetFileName<T>(), true))
             {
-                await file.WriteAsync(JsonConvert.SerializeObject(dataToWrite));
+                foreach (var data in newData)
+                {
+                    await file.WriteLineAsync(JsonConvert.SerializeObject(data));
+
+                }
             }
         }
 

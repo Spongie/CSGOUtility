@@ -19,12 +19,7 @@ namespace CSGOUtility.ViewModels
 
         public Player Player
         {
-            get
-            {
-                if (player == null)
-                    player = new Player();
-                return player;
-            }
+            get { return player ?? (player = new Player()); }
             set
             {
                 player = value;

@@ -67,7 +67,7 @@ namespace CSGOUtility.ViewModels
         private void Instance_onPlayerKill(string withWeapon, bool headShot, int round)
         {
             kills.Add(new Kill(withWeapon, headShot, DateTime.Now, round));
-            HeadshotPercent = kills.Where(kill => kill.Headshot).Count() / (float)kills.Count;
+            HeadshotPercent = kills.Count(kill => kill.Headshot) / (float)kills.Count;
         }
 
         public MTObservableCollection<Kill> Kills
@@ -91,15 +91,9 @@ namespace CSGOUtility.ViewModels
             }
         }
 
-        public string HeadshotPercentDisplay
-        {
-            get { return (HeadshotPercent * 100).ToString("f2") + "%"; }
-        }
+        public string HeadshotPercentDisplay => (HeadshotPercent * 100).ToString("f2") + "%";
 
-        public int TotalKills
-        {
-            get { return Kills.Count; }
-        }
+        public int TotalKills => Kills.Count;
 
         public int TotalDeaths
         {
@@ -111,17 +105,11 @@ namespace CSGOUtility.ViewModels
             }
         }
 
-        public string KD
-        {
-            get { return GetKD(); }
-        }
+        public string KD => GetKD();
 
         private string GetKD()
         {
-            if (TotalDeaths == 0)
-                return TotalKills.ToString();
-
-            return ((TotalKills / ((float)TotalKills + TotalDeaths)) * 100).ToString("f2");
+            return TotalDeaths == 0 ? TotalKills.ToString() : ((TotalKills / ((float)TotalKills + TotalDeaths)) * 100).ToString("f2");
         }
 
         public int TWins
