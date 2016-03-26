@@ -1,5 +1,6 @@
 ﻿using CSGOUtility.Models;
 using CSGSI;
+using CSGSI.Nodes;
 using System;
 using System.Threading.Tasks;
 
@@ -58,11 +59,14 @@ namespace CSGOUtility
 
         private void HandleInMatch(GameState gameState)
         {
-            if (gameState.Map.Phase == CSGSI.Nodes.MapPhase.Live && PreviousGameState.Map.Phase == CSGSI.Nodes.MapPhase.Warmup)
+            if (gameState.Map.Mode != MapMode.Undefined)
+                CurrentGameMode = gameState.Map.Mode;
+
+            if (gameState.Map.Phase == MapPhase.Live && PreviousGameState.Map.Phase == MapPhase.Warmup)
             {
                 onMatchStarted?.Invoke(this, new EventArgs());
             }
-            else if (gameState.Map.Phase == CSGSI.Nodes.MapPhase.Live)
+            else if (gameState.Map.Phase == MapPhase.Live)
             {
                 HandleRoundWon(gameState);
 
@@ -140,6 +144,8 @@ namespace CSGOUtility
         {
             get; set;
         }
+
+        public MapMode CurrentGameMode { get; set; }
 
         public static CSGOEventListener Instance => instance ?? (instance = new CSGOEventListener());
     }

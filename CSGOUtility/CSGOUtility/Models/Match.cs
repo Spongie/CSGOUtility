@@ -1,4 +1,5 @@
 ﻿using Common;
+using CSGSI.Nodes;
 using System;
 using System.Linq;
 
@@ -24,6 +25,11 @@ namespace CSGOUtility.Models
             datePlayed = DateTime.Now;
         }
 
+        public Match(MapMode currentGameMode) : this()
+        {
+            Mode = currentGameMode;
+        }
+
         public DateTime DatePlayed
         {
             get { return datePlayed; }
@@ -33,6 +39,20 @@ namespace CSGOUtility.Models
                 FirePropertyChanged();
             }
         }
+
+        private MapMode mode;
+        private MapMode currentGameMode;
+
+        public MapMode Mode
+        {
+            get { return mode; }
+            set
+            {
+                mode = value;
+                FirePropertyChanged();
+            }
+        }
+
 
         public float HeadshotPercent
         {

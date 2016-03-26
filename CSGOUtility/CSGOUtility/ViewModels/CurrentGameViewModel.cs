@@ -71,7 +71,7 @@ namespace CSGOUtility.ViewModels
         {
             get
             {
-                return match ?? (match = new Match());
+                return match ?? (match = new Match(CSGOEventListener.Instance.CurrentGameMode));
             }
             set
             {
