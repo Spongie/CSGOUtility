@@ -107,11 +107,11 @@ namespace CSGOUtility
 
         private void HandleRoundWon(GameState gameState)
         {
-            if (gameState.Map.TeamCT.Score > PreviousGameState.Map.TeamCT.Score)
+            if (gameState.Map.TeamCT.Score > PreviousGameState.Map.TeamCT.Score && PreviousGameState.Map.TeamCT.Score > -1)
             {
                 onTeamWonRound?.Invoke(Side.CounterTerrorist, gameState.Map.TeamCT.Score);
             }
-            else if (gameState.Map.TeamT.Score > PreviousGameState.Map.TeamT.Score)
+            else if (gameState.Map.TeamT.Score > PreviousGameState.Map.TeamT.Score && PreviousGameState.Map.TeamT.Score > -1)
             {
                 onTeamWonRound?.Invoke(Side.Terrorist, gameState.Map.TeamT.Score);
             }

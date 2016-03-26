@@ -15,13 +15,27 @@ namespace CSGOUtility.Models
 
         }
 
-        public Kill(string weapon, bool headshot, DateTime time, int round)
+        public Kill(string weapon, bool headshot, DateTime time, int round, Guid matchId)
         {
             Weapon = weapon;
             Headshot = headshot;
             Date = time;
             Round = round;
+            MatchId = matchId;
         }
+
+        private Guid matchId;
+
+        public Guid MatchId
+        {
+            get { return matchId; }
+            set
+            {
+                matchId = value;
+                FirePropertyChanged();
+            }
+        }
+
 
         public DateTime Date
         {

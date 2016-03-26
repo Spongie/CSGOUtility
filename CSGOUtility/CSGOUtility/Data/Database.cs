@@ -39,7 +39,6 @@ namespace CSGOUtility.Data
                 foreach (var data in newData)
                 {
                     await file.WriteLineAsync(JsonConvert.SerializeObject(data));
-
                 }
             }
         }
