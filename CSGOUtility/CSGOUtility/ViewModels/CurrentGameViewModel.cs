@@ -1,7 +1,9 @@
 ﻿using Common;
+using CSGOUtility.Data;
 using CSGOUtility.Models;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CSGOUtility.ViewModels
 {
@@ -12,6 +14,7 @@ namespace CSGOUtility.ViewModels
         private int ctWins;
         private int tWins;
         private int totalDeaths;
+        private Database database;
 
         public CurrentGameViewModel()
         {
@@ -22,11 +25,12 @@ namespace CSGOUtility.ViewModels
             CSGOEventListener.Instance.onMatchEnded += Instance_onMatchEnded;
             kills = new MTObservableCollection<Kill>();
             kills.CollectionChanged += Kills_CollectionChanged;
+            database = new Database();
         }
 
-        private void Instance_onMatchEnded(MatchResult result)
+        private async Task Instance_onMatchEnded(MatchResult result)
         {
-            
+            await database.WriteDataAsync(Kills);
         }
 
         private void Instance_onPlayerDied(object sender, EventArgs e)
@@ -109,7 +113,7 @@ namespace CSGOUtility.ViewModels
 
         private string GetKD()
         {
-            return TotalDeaths == 0 ? TotalKills.ToString() : ((TotalKills / ((float)TotalKills + TotalDeaths)) * 100).ToString("f2");
+            return TotalDeaths == 0 ? TotalKills.ToString() : ((TotalKills / ((float)TotalDeaths))).ToString("f2");
         }
 
         public int TWins

@@ -1,13 +1,14 @@
 ﻿using CSGOUtility.Models;
 using CSGSI;
 using System;
+using System.Threading.Tasks;
 
 namespace CSGOUtility
 {
     public delegate void PlayerNameChanged(string newName);
     public delegate void OnTeamWonRound(Side side, int newRounds);
     public delegate void OnPlayerKill(string withWeapon, bool headShot, int round);
-    public delegate void OnMatchEnding(MatchResult result);
+    public delegate Task OnMatchEnding(MatchResult result);
 
     public class CSGOEventListener
     {
