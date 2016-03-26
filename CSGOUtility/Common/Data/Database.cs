@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace Common.Data
 {
+    public delegate Task OnNewDataWritten(Type dataType);
+
     public class Database
     {
         private readonly string folder = "Data/";
-        public event EventHandler OnNewDataWritten;
+        public event OnNewDataWritten onNewDataWritten;
 
         public Database()
         {
@@ -20,7 +22,7 @@ namespace Common.Data
                 directory.Create();
         }
 
-        private async Task<IEnumerable<T>> ReadDataAsync<T>(IEnumerable<T> oldData)
+        private async Task<IEnumerable<T>> ReadDataAsync<T>(IEnumerable<T> oldData) where T : Entity
         {
             string fileName = GetFileName<T>();
 
@@ -34,7 +36,10 @@ namespace Common.Data
                 string dataRow = null;
                 while ((dataRow = await fileReader.ReadLineAsync()) != null)
                 {
-                    returnData.Add(JsonConvert.DeserializeObject<T>(dataRow));
+                    T data = JsonConvert.DeserializeObject<T>(dataRow);
+
+                    if (!oldData.Any(d => d.Id == data.Id))
+                        returnData.Add(data);
                 }
 
                 return returnData;
@@ -61,7 +66,7 @@ namespace Common.Data
                 }
             }
 
-            OnNewDataWritten?.Invoke(typeof(T), new EventArgs());
+            onNewDataWritten?.Invoke(typeof(T));
         }
 
         private string GetFileName<T>()
