@@ -11,7 +11,6 @@ namespace CSGOUtility.ViewModels
     public class CurrentGameViewModel : Entity
     {
         private Match match;
-        private Database database;
 
         public CurrentGameViewModel()
         {
@@ -20,8 +19,6 @@ namespace CSGOUtility.ViewModels
             CSGOEventListener.Instance.onMatchStarted += Instance_OnMatchStarted;
             CSGOEventListener.Instance.onPlayerDied += Instance_onPlayerDied;
             CSGOEventListener.Instance.onMatchEnded += Instance_onMatchEnded;
-            
-            database = new Database();
         }
 
         private async Task Instance_onMatchEnded(MatchResult result)

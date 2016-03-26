@@ -8,7 +8,7 @@
         Title="CSGO Utility" Height="550" Width="725" Closing="Window_Closing">
     <Grid>
         <TabControl>
-            <TabItem Header="Program">
+            <TabItem Header="Overview">
                 <StackPanel Orientation="Vertical">
                     <Label Content="{Binding Player.Name}"/>
                 </StackPanel>
