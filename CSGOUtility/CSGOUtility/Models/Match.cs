@@ -23,6 +23,12 @@ namespace CSGOUtility.Models
             HeadshotPercent = 0.0f;
             TotalDeaths = 0;
             datePlayed = DateTime.Now;
+            Kills.CollectionChanged += Kills_CollectionChanged;
+        }
+
+        private void Kills_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            UpdateReadOnlyFields();
         }
 
         public Match(MapMode currentGameMode) : this()
@@ -41,7 +47,6 @@ namespace CSGOUtility.Models
         }
 
         private MapMode mode;
-        private MapMode currentGameMode;
 
         public MapMode Mode
         {
@@ -52,7 +57,6 @@ namespace CSGOUtility.Models
                 FirePropertyChanged();
             }
         }
-
 
         public float HeadshotPercent
         {
@@ -120,6 +124,13 @@ namespace CSGOUtility.Models
         {
             Kills.Add(new Kill(withWeapon, headShot, DateTime.Now, round, Id));
             HeadshotPercent = kills.Count(kill => kill.Headshot) / (float)kills.Count;
+        }
+
+        public void UpdateReadOnlyFields()
+        {
+            FirePropertyChanged("TotalKills");
+            FirePropertyChanged("TotalDeaths");
+            FirePropertyChanged("KD");
         }
     }
 }

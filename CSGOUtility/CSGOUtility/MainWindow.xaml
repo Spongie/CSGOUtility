@@ -9,9 +9,7 @@
     <Grid>
         <TabControl>
             <TabItem Header="Overview">
-                <StackPanel Orientation="Vertical">
-                    <Label Content="{Binding Player.Name}"/>
-                </StackPanel>
+                <views:OverviewView />
             </TabItem>
             <TabItem Header="Current game">
                 <views:CurrentGameView />

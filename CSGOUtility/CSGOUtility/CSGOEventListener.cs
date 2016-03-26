@@ -9,7 +9,7 @@ namespace CSGOUtility
     public delegate void PlayerNameChanged(string newName);
     public delegate void OnTeamWonRound(Side side, int newRounds);
     public delegate void OnPlayerKill(string withWeapon, bool headShot, int round);
-    public delegate Task OnMatchEnding(MatchResult result);
+    public delegate void OnMatchEnding(MatchResult result);
 
     public class CSGOEventListener
     {
@@ -19,6 +19,7 @@ namespace CSGOUtility
         public event EventHandler onMatchStarted;
         public event OnMatchEnding onMatchEnded;
         public event EventHandler onPlayerDied;
+        public event EventHandler onGameModeFound;
 
         private static CSGOEventListener instance;
         private GameStateListener listener;
@@ -60,7 +61,9 @@ namespace CSGOUtility
         private void HandleInMatch(GameState gameState)
         {
             if (gameState.Map.Mode != MapMode.Undefined)
-                CurrentGameMode = gameState.Map.Mode;
+            {
+                onGameModeFound?.Invoke(gameState.Map.Mode, new EventArgs());
+            }
 
             if (gameState.Map.Phase == MapPhase.Live && PreviousGameState.Map.Phase == MapPhase.Warmup)
             {
@@ -144,8 +147,6 @@ namespace CSGOUtility
         {
             get; set;
         }
-
-        public MapMode CurrentGameMode { get; set; }
 
         public static CSGOEventListener Instance => instance ?? (instance = new CSGOEventListener());
     }

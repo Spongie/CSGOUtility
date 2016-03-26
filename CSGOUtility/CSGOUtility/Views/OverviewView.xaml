@@ -5,8 +5,34 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CSGOUtility.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-            
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance d:Type=viewModels:OverviewViewModel, IsDesignTimeCreatable=True}" >
+    <Grid Initialized="Grid_Initialized">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30*"/>
+            <ColumnDefinition Width="70*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="43*"/>
+            <RowDefinition Height="50*"/>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Column="0" Grid.Row="0" >
+            <Label Content="Gamemode " DockPanel.Dock="Left" Margin="3"/>
+            <ComboBox Margin="3" HorizontalAlignment="Stretch" DockPanel.Dock="Left" ItemsSource="{Binding GameModeNames}"
+                      SelectedItem="{Binding SelectedGameMode}" x:Name="comboboxModes"/>
+        </DockPanel>
+        <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="1">
+            <Label Content="Kills:"/>
+            <Label Content="Deaths:"/>
+            <Label Content="Headshot %:"/>
+            <Label Content="KD :"/>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1">
+            <Label Content="{Binding TotalKills}"/>
+            <Label Content="{Binding TotalDeaths}"/>
+            <Label Content="{Binding HeadshotPercent}" ContentStringFormat="{}{0:P2}"/>
+            <Label Content="{Binding KD}" ContentStringFormat="{}{0:F2}" />
+        </StackPanel>
     </Grid>
 </UserControl>

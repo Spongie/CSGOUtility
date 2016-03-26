@@ -19,9 +19,15 @@ namespace CSGOUtility.ViewModels
             CSGOEventListener.Instance.onMatchStarted += Instance_OnMatchStarted;
             CSGOEventListener.Instance.onPlayerDied += Instance_onPlayerDied;
             CSGOEventListener.Instance.onMatchEnded += Instance_onMatchEnded;
+            CSGOEventListener.Instance.onGameModeFound += Instance_onGameModeFound;
         }
 
-        private async Task Instance_onMatchEnded(MatchResult result)
+        private void Instance_onGameModeFound(object sender, EventArgs e)
+        {
+            CurrentMatch.Mode = (CSGSI.Nodes.MapMode)sender;
+        }
+
+        private async void Instance_onMatchEnded(MatchResult result)
         {
             await database.WriteDataAsync(CurrentMatch.Kills);
             await database.WriteDataAsync(new List<Match> { CurrentMatch });
@@ -33,22 +39,14 @@ namespace CSGOUtility.ViewModels
             UpdateReadonlyFields();
         }
 
-        private void Kills_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            UpdateReadonlyFields();
-        }
-
         private void UpdateReadonlyFields()
         {
-            FirePropertyChanged("TotalKills");
-            FirePropertyChanged("TotalDeaths");
-            FirePropertyChanged("KD");
+            CurrentMatch.UpdateReadOnlyFields();
         }
 
         private void Instance_OnMatchStarted(object sender, EventArgs e)
         {
             CurrentMatch = new Match();
-            CurrentMatch.Kills.CollectionChanged += Kills_CollectionChanged;
         }
 
         private void Instance_onTeamWonRound(Side side, int newRounds)
@@ -68,7 +66,7 @@ namespace CSGOUtility.ViewModels
         {
             get
             {
-                return match ?? (match = new Match(CSGOEventListener.Instance.CurrentGameMode));
+                return match ?? (match = new Match());
             }
             set
             {

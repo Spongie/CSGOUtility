@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Common.Data
 {
-    public delegate Task OnNewDataWritten(Type dataType);
+    public delegate void OnNewDataWritten(Type dataType);
 
     public class Database
     {
