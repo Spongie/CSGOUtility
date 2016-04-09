@@ -9,11 +9,9 @@ namespace Common
     {
         public event PropertyChangedEventHandler PropertyChanged;
         protected Guid id;
-        protected Database database;
 
         public Entity()
         {
-            database = new Database();
             Id = Guid.NewGuid();
         }
 

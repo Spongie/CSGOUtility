@@ -69,7 +69,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Data\Database.cs" />
     <Compile Include="Models\GameModes.cs" />
     <Compile Include="Models\Kill.cs" />
     <Compile Include="Models\Match.cs" />

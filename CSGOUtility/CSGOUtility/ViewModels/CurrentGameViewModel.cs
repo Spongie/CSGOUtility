@@ -1,16 +1,15 @@
 ﻿using Common;
-using CSGOUtility.Data;
+using Common.Data;
 using CSGOUtility.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CSGOUtility.ViewModels
 {
     public class CurrentGameViewModel : Entity
     {
         private Match match;
+        private Database database;
 
         public CurrentGameViewModel()
         {
@@ -20,6 +19,7 @@ namespace CSGOUtility.ViewModels
             CSGOEventListener.Instance.onPlayerDied += Instance_onPlayerDied;
             CSGOEventListener.Instance.onMatchEnded += Instance_onMatchEnded;
             CSGOEventListener.Instance.onGameModeFound += Instance_onGameModeFound;
+            database = Database.Instance;
         }
 
         private void Instance_onGameModeFound(object sender, EventArgs e)
@@ -29,7 +29,6 @@ namespace CSGOUtility.ViewModels
 
         private async void Instance_onMatchEnded(MatchResult result)
         {
-            await database.WriteDataAsync(CurrentMatch.Kills);
             await database.WriteDataAsync(new List<Match> { CurrentMatch });
         }
 

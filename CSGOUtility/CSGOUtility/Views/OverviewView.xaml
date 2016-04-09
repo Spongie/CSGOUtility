@@ -22,17 +22,21 @@
             <ComboBox Margin="3" HorizontalAlignment="Stretch" DockPanel.Dock="Left" ItemsSource="{Binding GameModeNames}"
                       SelectedItem="{Binding SelectedGameMode}" x:Name="comboboxModes"/>
         </DockPanel>
-        <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="1">
-            <Label Content="Kills:"/>
-            <Label Content="Deaths:"/>
-            <Label Content="Headshot %:"/>
-            <Label Content="KD :"/>
-        </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1">
-            <Label Content="{Binding TotalKills}"/>
-            <Label Content="{Binding TotalDeaths}"/>
-            <Label Content="{Binding HeadshotPercent}" ContentStringFormat="{}{0:P2}"/>
-            <Label Content="{Binding KD}" ContentStringFormat="{}{0:F2}" />
-        </StackPanel>
+        <GroupBox Header="Overall" Grid.Column="0" Grid.Row="1">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel>
+                    <Label Content="Kills:" />
+                    <Label Content="Deaths:"/>
+                    <Label Content="Headshot %:"/>
+                    <Label Content="KD :"/>
+                </StackPanel>
+                <StackPanel>
+                    <Label Content="{Binding TotalKills}" HorizontalAlignment="Center"/>
+                    <Label Content="{Binding TotalDeaths}" HorizontalAlignment="Center"/>
+                    <Label Content="{Binding HeadshotPercent}" ContentStringFormat="{}{0:P2}" HorizontalAlignment="Center"/>
+                    <Label Content="{Binding KD}" ContentStringFormat="{}{0:F2}" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
     </Grid>
 </UserControl>

@@ -13,6 +13,7 @@ namespace Common.Data
     {
         private readonly string folder = "Data/";
         public event OnNewDataWritten onNewDataWritten;
+        private static Database instance;
 
         public Database()
         {
@@ -72,6 +73,17 @@ namespace Common.Data
         private string GetFileName<T>()
         {
             return folder + typeof(T).Name + ".cdb";
+        }
+
+        public static Database Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = new Database();
+
+                return instance;
+            }
         }
     }
 }

@@ -1,19 +1,20 @@
 ﻿using Common;
+using Common.Data;
 using CSGOUtility.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Data;
 
 namespace CSGOUtility.ViewModels
 {
     public class OverviewViewModel : Entity
     {
+        private Database database;
+
         public OverviewViewModel()
         {
+            database = Database.Instance;
             database.onNewDataWritten += Database_OnNewDataWritten;
             Matches = new MTObservableCollection<Match>();
             SelectedGameMode = GameModes.All;
